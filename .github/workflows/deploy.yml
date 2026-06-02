@@ -13,7 +13,7 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/leics-monitor
+  # IMAGE_NAME: ${{ github.repository_owner }}/leics-monitor
   RESOURCE_GROUP: rg-leics-monitor
   CONTAINER_APP: ca-leics-monitor
 
@@ -23,6 +23,12 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      # Automatically grabs your username, downcases it, 
+      # and registers it as $IMAGE_NAME for all subsequent steps
+      - name: Set Lowercase Image Name
+        run: |
+          echo "IMAGE_NAME=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')/leics-monitor" >> $GITHUB_ENV
 
       # 1. Login to Azure Passwordlessly
       - name: Azure Login (OIDC)
