@@ -1,0 +1,4 @@
+requests
+azure-servicebus
+azure-identity
+pymongo
