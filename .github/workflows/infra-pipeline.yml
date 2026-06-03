@@ -1,0 +1,45 @@
+name: 'Terraform Infrastructure Pipeline'
+
+on:
+  push:
+    branches: [ "main" ]
+    # The 'paths' block is the magic. This pipeline ONLY triggers if a .tf file changes.
+    paths:
+      - '**/*.tf'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform:
+    name: 'Deploy Infrastructure'
+    runs-on: ubuntu-latest
+    
+    # Terraform automatically looks for these specific ARM_ variables to authenticate
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_USE_OIDC: true
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Format Check
+      run: terraform fmt -check
+
+    - name: Terraform Plan
+      run: terraform plan -out=tfplan
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve tfplan
