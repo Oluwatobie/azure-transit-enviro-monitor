@@ -86,14 +86,14 @@ resource "azurerm_container_app_environment" "env" {
 
 # 7. The Container App (Your serverless compute)
 resource "azurerm_container_app" "app" {
-  name                         = "ca-${var.prefix}-monitor"
+  name                         = "ca-${var.prefix}-consumer"
   container_app_environment_id = azurerm_container_app_environment.env.id
   resource_group_name          = azurerm_resource_group.rg.name
   revision_mode                = "Single"
 
   template {
     container {
-      name   = "monitor-app"
+      name   = "consumer-app"
       # We use a placeholder image for now, we will deploy your Python code over it later!
       image  = "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest"
       cpu    = 0.25
