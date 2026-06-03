@@ -123,3 +123,44 @@ resource "azurerm_role_assignment" "sb_sender" {
   role_definition_name = "Azure Service Bus Data Owner"
   principal_id         = azurerm_container_app.app.identity[0].principal_id
 }
+
+# 9. The Producer Container App (Runs inside your existing environment)
+resource "azurerm_container_app" "producer_app" {
+  name                         = "ca-${var.prefix}-producer"
+  container_app_environment_id = azurerm_container_app_environment.env.id
+  resource_group_name          = azurerm_resource_group.rg.name
+  revision_mode                = "Single"
+
+  # Zero-Trust Security Identity
+  identity {
+    type = "SystemAssigned"
+  }
+
+  template {
+    container {
+      name   = "producer-app"
+      # We use the placeholder image so Terraform builds cleanly. GitHub Actions will overwrite this!
+      image  = "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest"
+      cpu    = 0.25
+      memory = "0.5Gi"
+
+      env {
+        name  = "SERVICE_BUS_NAMESPACE"
+        value = "${azurerm_servicebus_namespace.sb.name}.servicebus.windows.net"
+      }
+      
+      # We tell this container it's acting as the PRODUCER
+      env {
+        name  = "APP_ROLE"
+        value = "PRODUCER"
+      }
+    }
+  }
+}
+
+# 10. The VIP Pass: Let the Producer App push data to the Service Bus securely
+resource "azurerm_role_assignment" "producer_sb_sender" {
+  scope                = azurerm_servicebus_namespace.sb.id
+  role_definition_name = "Azure Service Bus Data Sender"
+  principal_id         = azurerm_container_app.producer_app.identity[0].principal_id
+}
