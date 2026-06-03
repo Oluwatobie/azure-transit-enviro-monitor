@@ -4,6 +4,10 @@ name: Deploy Leicester Monitor
 on:
   push:
     branches: [ "main" ]
+    # Tell the App Pipeline to explicitly IGNORE infrastructure files
+    paths-ignore:
+      - '**/*.tf'
+      - '.github/workflows/infra-pipeline.yml'
 
 # This is REQUIRED for Passwordless OIDC authentication
 permissions:
