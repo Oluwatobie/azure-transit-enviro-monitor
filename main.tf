@@ -40,6 +40,10 @@ resource "azurerm_cosmosdb_account" "db" {
     name = "EnableServerless"
   }
 
+  capabilities {
+    name = "EnableMongo"
+  }
+
   consistency_policy {
     consistency_level = "Session"
   }
@@ -115,6 +119,12 @@ resource "azurerm_container_app" "app" {
   identity {
     type = "SystemAssigned"
   }
+
+  lifecycle {
+    ignore_changes = [
+      template[0].container[0].image
+    ]
+  }
 }
 
 # 8. Role-Based Access Control (RBAC) - Granting the Container App passwordless access
@@ -155,6 +165,12 @@ resource "azurerm_container_app" "producer_app" {
         value = "PRODUCER"
       }
     }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      template[0].container[0].image
+    ]
   }
 }
 
