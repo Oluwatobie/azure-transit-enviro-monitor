@@ -59,17 +59,17 @@ jobs:
 
       # 4. Deploy the new image to Azure Container Apps
       - name: Deploy to Consumer Container
-      run: |
-        az containerapp update \
-          --name ca-leics-consumer \
-          --resource-group rg-leics-monitor \
-          --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} \
-          --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        run: |
+          az containerapp update \
+            --name ca-leics-consumer \
+            --resource-group rg-leics-monitor \
+            --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} \
+            --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
-    - name: Deploy to Producer Container
-      run: |
-        az containerapp update \
-          --name ca-leics-producer \
-          --resource-group rg-leics-monitor \
-          --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} \
-          --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+      - name: Deploy to Producer Container
+        run: |
+          az containerapp update \
+            --name ca-leics-producer \
+            --resource-group rg-leics-monitor \
+            --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} \
+            --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
