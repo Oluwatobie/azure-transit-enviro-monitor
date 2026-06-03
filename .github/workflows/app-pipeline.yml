@@ -19,7 +19,6 @@ env:
   REGISTRY: ghcr.io
   # IMAGE_NAME: ${{ github.repository_owner }}/leics-monitor
   RESOURCE_GROUP: rg-leics-monitor
-  CONTAINER_APP: ca-leics-monitor
 
 jobs:
   build-and-deploy:
@@ -59,10 +58,18 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       # 4. Deploy the new image to Azure Container Apps
-      - name: Update Azure Container App
-        run: |
-          az containerapp update \
-            --name ${{ env.CONTAINER_APP }} \
-            --resource-group ${{ env.RESOURCE_GROUP }} \
-            --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} \
-            --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+      - name: Deploy to Consumer Container
+      run: |
+        az containerapp update \
+          --name ca-leics-consumer \
+          --resource-group rg-leics-monitor \
+          --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} \
+          --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+    - name: Deploy to Producer Container
+      run: |
+        az containerapp update \
+          --name ca-leics-producer \
+          --resource-group rg-leics-monitor \
+          --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} \
+          --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
