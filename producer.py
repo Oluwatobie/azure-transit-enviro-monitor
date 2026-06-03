@@ -1,7 +1,8 @@
 import os
 import json
 import requests
-import urllib3  
+import urllib3
+import time  
 from datetime import datetime
 from azure.servicebus import ServiceBusClient, ServiceBusMessage
 from azure.identity import DefaultAzureCredential
@@ -72,9 +73,10 @@ def send_to_queue(train_list):
             print(f"✅ Successfully pushed {messages_sent} train updates to the Service Bus Queue!")
 
 if __name__ == "__main__":
-    trains = fetch_live_trains()
-    
-    if trains:
-        send_to_queue(trains)
-    else:
-        print("No trains found or API error.")
+    print("Starting the Leicester Transit Producer...")
+    while True:
+        print("Fetching latest train data...")
+        asyncio.run(send_to_service_bus())
+        
+        print("Sleeping for 60 seconds...")
+        time.sleep(60)
