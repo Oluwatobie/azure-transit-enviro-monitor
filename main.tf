@@ -21,9 +21,9 @@ resource "random_integer" "ri" {
 resource "azurerm_servicebus_queue" "queue" {
   name         = "leicester-trains"
   namespace_id = azurerm_servicebus_namespace.sb.id
-  
+
   # Messages expire after 1 hour if not processed (keeps the queue clean!)
-  default_message_ttl = "PT1H" 
+  default_message_ttl = "PT1H"
 }
 
 # 3. Azure Cosmos DB (Serverless NoSQL Database to keep costs at zero)
@@ -93,12 +93,12 @@ resource "azurerm_container_app" "app" {
 
   template {
     container {
-      name   = "consumer-app"
+      name = "consumer-app"
       # We use a placeholder image for now, we will deploy your Python code over it later!
       image  = "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest"
       cpu    = 0.25
       memory = "0.5Gi"
-      
+
       # Dynamic Secrets injected securely into the container
       env {
         name  = "COSMOS_CONNECTION_STRING"
@@ -138,7 +138,7 @@ resource "azurerm_container_app" "producer_app" {
 
   template {
     container {
-      name   = "producer-app"
+      name = "producer-app"
       # We use the placeholder image so Terraform builds cleanly. GitHub Actions will overwrite this!
       image  = "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest"
       cpu    = 0.25
@@ -148,7 +148,7 @@ resource "azurerm_container_app" "producer_app" {
         name  = "SERVICE_BUS_NAMESPACE"
         value = "${azurerm_servicebus_namespace.sb.name}.servicebus.windows.net"
       }
-      
+
       # We tell this container it's acting as the PRODUCER
       env {
         name  = "APP_ROLE"
