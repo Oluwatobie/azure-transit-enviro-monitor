@@ -76,7 +76,15 @@ if __name__ == "__main__":
     print("Starting the Leicester Transit Producer...")
     while True:
         print("Fetching latest train data...")
-        asyncio.run(send_to_service_bus())
         
+        # 1. Fetch the data from the API
+        trains = fetch_live_trains()
+        
+        # 2. If we got data back, send it to the queue
+        if trains:
+            send_to_queue(trains)
+        else:
+            print("No train data returned this minute.")
+            
         print("Sleeping for 60 seconds...")
         time.sleep(60)
