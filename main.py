@@ -1,15 +1,14 @@
 import os
-import time
+import subprocess
 
 if __name__ == "__main__":
-    # Check what role Terraform assigned this container (defaults to CONSUMER)
+    # Check what role Terraform assigned this container
     role = os.environ.get("APP_ROLE", "CONSUMER")
     
-    print(f"Container starting up... Assigned Role: {role}")
+    print(f"Container starting up... Assigned Role: {role}", flush=True)
     
+    # Use subprocess to run the scripts exactly as if we typed them in the terminal
     if role == "PRODUCER":
-        # Import and run the producer loop
-        import producer
+        subprocess.run(["python", "producer.py"])
     else:
-        # Import and run the consumer loop
-        import consumer
+        subprocess.run(["python", "consumer.py"])
