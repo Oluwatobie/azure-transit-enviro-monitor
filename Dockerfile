@@ -11,5 +11,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy your Python scripts into the container
 COPY . .
 
-# Tell the container to run the consumer script constantly
-CMD ["python", "consumer.py"]
+# Tell the container to run the either producer or consumer script
+CMD ["python", "main.py"]
