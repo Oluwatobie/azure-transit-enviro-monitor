@@ -58,4 +58,3 @@ Data from Cosmos DB is visualized in a comprehensive Grafana dashboard, providin
 * **Delay & Cancellation Monitoring:** Dedicated tables isolating actively delayed or cancelled trains, alongside a live tracker for the Average Delay time across the network.
 
 ![Grafana Dashboard Screenshot](https://raw.githubusercontent.com/Oluwatobie/azure-transit-enviro-monitor/main/Leicester-Train-Departures.png)
-*(Note: Ensure your dashboard image is named `dashboard.png` and uploaded to the root of this repository!)*
