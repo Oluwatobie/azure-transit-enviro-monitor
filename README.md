@@ -38,16 +38,17 @@ This system is designed using a **decoupled, microservice architecture** to ensu
 
 ```text
 ├── .github/workflows/
-│   ├── terraform.yml      # CI/CD for Infrastructure
-│   └── docker.yml         # CI/CD for Python Microservices
-├── main.tf                # Azure resource definitions
-├── providers.tf           # Azure/Terraform provider config
-├── variables.tf           # Parameterized deployment variables
-├── consumer.py            # Pulls from Service Bus, writes to Cosmos DB
-├── producer.py            # Fetches API data, writes to Service Bus
-├── main.py                # Subprocess router (determines container role)
-├── Dockerfile             # Unified image for both Producer and Consumer
-└── requirements.txt       # Python dependencies
+│   ├── terraform.yml      # CI/CD for Infrastructure
+│   └── docker.yml         # CI/CD for Python Microservices
+├── main.tf                # Azure resource definitions
+├── providers.tf           # Azure/Terraform provider config
+├── variables.tf           # Parameterized deployment variables
+├── consumer.py            # Pulls from Service Bus, writes to Cosmos DB
+├── producer.py            # Fetches API data, writes to Service Bus
+├── main.py                # Subprocess router (determines container role)
+├── Dockerfile             # Unified image for both Producer and Consumer
+└── requirements.txt       # Python dependencies
+```
 
 ## 📊 Live Dashboard
 Data from Cosmos DB is visualized in a comprehensive Grafana dashboard, providing real-time observability into transit operations. The dashboard tracks:
