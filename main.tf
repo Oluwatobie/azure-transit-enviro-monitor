@@ -89,7 +89,7 @@ resource "azurerm_container_app_environment" "env" {
 }
 
 # 7. The Container App (Your serverless compute)
-resource "azurerm_container_app" "app" {
+resource "azurerm_container_app" "consumer_app" {
   name                         = "ca-${var.prefix}-consumer"
   container_app_environment_id = azurerm_container_app_environment.env.id
   resource_group_name          = azurerm_resource_group.rg.name
@@ -131,7 +131,7 @@ resource "azurerm_container_app" "app" {
 resource "azurerm_role_assignment" "sb_sender" {
   scope                = azurerm_servicebus_namespace.sb.id
   role_definition_name = "Azure Service Bus Data Owner"
-  principal_id         = azurerm_container_app.app.identity[0].principal_id
+  principal_id         = azurerm_container_app.consumer_app.identity[0].principal_id
 }
 
 # 9. The Producer Container App (Runs inside your existing environment)
@@ -180,3 +180,11 @@ resource "azurerm_role_assignment" "producer_sb_sender" {
   role_definition_name = "Azure Service Bus Data Sender"
   principal_id         = azurerm_container_app.producer_app.identity[0].principal_id
 }
+
+# Give the Consumer App permission to read from the Service Bus
+resource "azurerm_role_assignment" "consumer_b_receiver" {
+  scope                = azurerm_servicebus_namespace.sb.id
+  role_definition_name = "Azure Service Bus Data Receiver"
+  principal_id         = azurerm_container_app.consumer_app.identity[0].principal_id
+}
+
