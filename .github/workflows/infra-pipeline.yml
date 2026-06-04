@@ -6,6 +6,7 @@ on:
     # The 'paths' block is the magic. This pipeline ONLY triggers if a .tf file changes.
     paths:
       - '**/*.tf'
+  workflow_dispatch:
 
 permissions:
   id-token: write
