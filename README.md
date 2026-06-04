@@ -57,4 +57,4 @@ Data from Cosmos DB is visualized in a comprehensive Grafana dashboard, providin
 * **Analytics & Reliability:** Visual breakdowns of Trains by Operator, Top Destinations, and an overall On-Time vs. Cancelled ratio.
 * **Delay & Cancellation Monitoring:** Dedicated tables isolating actively delayed or cancelled trains, alongside a live tracker for the Average Delay time across the network.
 
-![Grafana Dashboard Screenshot](https://raw.githubusercontent.com/Oluwatobie/azure-transit-enviro-monitor/main/Leicester-Train-Departures.png)
+![Grafana Dashboard Screenshot](Leicester-Train-Departures.png)
