@@ -40,12 +40,22 @@ This system is designed using a **decoupled, microservice architecture** to ensu
 ├── .github/workflows/
 │   ├── terraform.yml      # CI/CD for Infrastructure
 │   └── docker.yml         # CI/CD for Python Microservices
-├── terraform/
-│   ├── main.tf            # Azure resource definitions
-│   ├── providers.tf       # Azure/Terraform provider config
-│   └── variables.tf       # Parameterized deployment variables
+├── main.tf                # Azure resource definitions
+├── providers.tf           # Azure/Terraform provider config
+├── variables.tf           # Parameterized deployment variables
 ├── consumer.py            # Pulls from Service Bus, writes to Cosmos DB
 ├── producer.py            # Fetches API data, writes to Service Bus
 ├── main.py                # Subprocess router (determines container role)
 ├── Dockerfile             # Unified image for both Producer and Consumer
 └── requirements.txt       # Python dependencies
+
+## 📊 Live Dashboard
+Data from Cosmos DB is visualized in a comprehensive Grafana dashboard, providing real-time observability into transit operations. The dashboard tracks:
+
+* **Headline KPIs:** Live counters for Total Departures, Cancelled Trains, On-Time Rate, Unique Destinations, and Platforms in Use.
+* **Live Tracking:** A real-time Departure Board detailing current train statuses, estimated arrivals, and platform assignments.
+* **Analytics & Reliability:** Visual breakdowns of Trains by Operator, Top Destinations, and an overall On-Time vs. Cancelled ratio.
+* **Delay & Cancellation Monitoring:** Dedicated tables isolating actively delayed or cancelled trains, alongside a live tracker for the Average Delay time across the network.
+
+![Grafana Dashboard Screenshot](https://raw.githubusercontent.com/Oluwatobie/azure-transit-enviro-monitor/main/Leicester-Train-Departures.png)
+*(Note: Ensure your dashboard image is named `dashboard.png` and uploaded to the root of this repository!)*
